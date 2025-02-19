@@ -1,6 +1,7 @@
 import { db } from "../../../lib/db";
-import { eq } from "drizzle-orm";
+import { eq, InferModel } from "drizzle-orm";
 import { users, issues, InsertIssues, IssueStatus } from "../../../lib/schema";
+
 /**
  * processes incoming GraphQL queries/mutations and interacts with the SQLite DB using Drizzle ORM
  */
@@ -49,13 +50,15 @@ const resolvers = {
     status,
   }: {
     id: string;
-    status: "BACKLOG" | "TODO" | "INPROGRESS" | "DONE";
+    status: IssueStatus;
   }) => {
     const [updatedIssue] = await db
       .update(issues)
-      .set({ status }) // Remove the type assertion
+      //@ts-ignore
+      .set({ status })
       .where(eq(issues.id, id))
       .returning();
+
     if (!updatedIssue) {
       throw new Error("Failed to update issue status");
     }
