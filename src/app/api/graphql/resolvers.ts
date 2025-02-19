@@ -1,6 +1,6 @@
 import { db } from "../../../lib/db";
 import { eq } from "drizzle-orm";
-import { users, issues } from "../../../lib/schema";
+import { users, issues, InsertIssues, IssueStatus } from "../../../lib/schema";
 /**
  * processes incoming GraphQL queries/mutations and interacts with the SQLite DB using Drizzle ORM
  */
@@ -22,29 +22,38 @@ const resolvers = {
   createIssue: async ({
     input,
   }: {
-    input: { title: string; content: string; status?: string; userId: string };
+    input: {
+      title: string;
+      content: string;
+      status: IssueStatus;
+      userId: string;
+    };
   }) => {
-    const [newIssue] = await db
-      .insert(issues)
-      .values({
-        title: input.title,
-        content: input.content,
-        status: input.status,
-        userId: input.userId,
-        createdAt: new Date().toISOString(),
-      })
-      .returning();
+    const issueData = {
+      title: input.title,
+      content: input.content,
+      status: input.status,
+      userId: input.userId,
+    };
+
+    const [newIssue] = await db.insert(issues).values(issueData).returning();
+
     if (!newIssue) {
       throw new Error("Failed to create issue");
     }
     return newIssue;
   },
 
-  updateIssueStatus: async ({ id, status }: { id: string; status: string }) => {
+  updateIssueStatus: async ({
+    id,
+    status,
+  }: {
+    id: string;
+    status: "BACKLOG" | "TODO" | "INPROGRESS" | "DONE";
+  }) => {
     const [updatedIssue] = await db
       .update(issues)
-      //@ts-ignore
-      .set({ status })
+      .set({ status }) // Remove the type assertion
       .where(eq(issues.id, id))
       .returning();
     if (!updatedIssue) {

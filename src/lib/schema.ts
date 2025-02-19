@@ -8,6 +8,8 @@ import { sqliteTable, text } from "drizzle-orm/sqlite-core";
  * @returns
  */
 
+export type IssueStatus = "BACKLOG" | "TODO" | "INPROGRESS" | "DONE";
+
 const id = () =>
   text("id")
     .primaryKey()
@@ -34,8 +36,8 @@ export const issues = sqliteTable("issues", {
   title: text("title").notNull(),
   userId: text("userId").notNull(),
   content: text("content").notNull(),
-  status: text("status", { enum: ["backlog", "todo", "inprogress", "done"] })
-    .default("backlog")
+  status: text("status", { enum: ["BACKLOG", "TODO", "INPROGRESS", "DONE"] })
+    .default("BACKLOG")
     .notNull(),
   createdAt: createdAt(),
 });
