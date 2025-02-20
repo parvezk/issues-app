@@ -95,6 +95,7 @@ const HomePage = () => {
   return (
     <div>
       <header>
+        <h1>Issues App</h1>
         <h2>Issues</h2>
         <Tooltip content="New Issue">
           <button
