@@ -23,6 +23,7 @@ import {
   CreateIssueMutation,
   UPDATE_ISSUE_STATUS_MUTATION,
 } from "@/gql";
+import { IssueStatus } from "@/lib/schema";
 
 const HomePage = () => {
   const [{ data, fetching, error }, replay] = useQuery({
@@ -34,18 +35,15 @@ const HomePage = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [issueTitle, setIssueTitle] = useState("");
   const [issueDescription, setIssueDescription] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState<Record<string, string>>(
-    {}
-  );
+  const [selectedStatus, setSelectedStatus] = useState<IssueStatus>();
 
   const onCreate = async (close) => {
-    console.log("Creating issue", issueTitle, issueDescription);
-
     const input = {
       title: issueTitle,
       content: issueDescription,
+      status: IssueStatus.BACKLOG,
       // TODO: move to schema def
-      userId: "12345qwert", // Replace with actual user ID
+      userId: "12345qwert", // Replace with CTX; actual user ID
     };
 
     const result = await createNewIssue({ input });
@@ -60,9 +58,10 @@ const HomePage = () => {
 
   const [, updateIssueStatus] = useMutation(UPDATE_ISSUE_STATUS_MUTATION);
   // TODO: move out
-  const handleStatusChange = (issueId: string, newStatus: string) => {
+  const handleStatusChange = (issueId: string, newStatus: IssueStatus) => {
+    console.log("CALLED", issueId, newStatus);
     updateIssueStatus(
-      { id: issueId, status: newStatus },
+      { id: issueId, status: IssueStatus },
       {
         // Optimistically update the cache without refetching
         update: (cache, mutationResult) => {
@@ -119,13 +118,15 @@ const HomePage = () => {
               <p>{issue.content || "No content"}</p>
               <div>
                 <select
-                  value={selectedStatus[issue.id] || issue.status}
-                  onChange={(e) => handleStatusChange(issue.id, e.target.value)}
+                  value={issue.status}
+                  onChange={(e) =>
+                    handleStatusChange(issue.id, IssueStatus[e.target.value])
+                  }
                 >
-                  <option value="backlog">Backlog</option>
-                  <option value="todo">Todo</option>
-                  <option value="inprogress">In Progress</option>
-                  <option value="done">Done</option>
+                  <option value={IssueStatus.BACKLOG}>Backlog</option>
+                  <option value={IssueStatus.TODO}>Todo</option>
+                  <option value={IssueStatus.IN_PROGRESS}>In Progress</option>
+                  <option value={IssueStatus.DONE}>Done</option>
                 </select>
               </div>
             </li>

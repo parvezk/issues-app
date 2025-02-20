@@ -1,9 +1,10 @@
 import { db } from "../../../lib/db";
-import { eq, InferModel } from "drizzle-orm";
-import { users, issues, InsertIssues, IssueStatus } from "../../../lib/schema";
+import { eq } from "drizzle-orm";
+import { users, issues, IssueStatus } from "../../../lib/schema";
 
 /**
- * processes incoming GraphQL queries/mutations and interacts with the SQLite DB using Drizzle ORM
+ * Processes incoming GraphQL queries/mutations
+ * Interacts with the SQLite Turso DB using Drizzle ORM
  */
 
 const resolvers = {
@@ -20,27 +21,19 @@ const resolvers = {
     return await db.select().from(issues).where(eq(issues.userId, user[0].id));
   },
 
-  createIssue: async ({
-    input,
-  }: {
-    input: {
-      title: string;
-      content: string;
-      status: IssueStatus;
-      userId: string;
-    };
-  }) => {
+  createIssue: async ({ input }) => {
+    console.log("RESOLVER");
     const issueData = {
       title: input.title,
       content: input.content,
-      status: input.status,
+      status: input.status || IssueStatus.BACKLOG,
       userId: input.userId,
     };
 
     const [newIssue] = await db.insert(issues).values(issueData).returning();
 
     if (!newIssue) {
-      throw new Error("Failed to create issue");
+      throw new Error("CUSTOM Failed to create issue");
     }
     return newIssue;
   },

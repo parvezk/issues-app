@@ -8,7 +8,12 @@ import { sqliteTable, text } from "drizzle-orm/sqlite-core";
  * @returns
  */
 
-export type IssueStatus = "BACKLOG" | "TODO" | "INPROGRESS" | "DONE";
+export enum IssueStatus {
+  BACKLOG = "BACKLOG",
+  TODO = "TODO",
+  IN_PROGRESS = "IN_PROGRESS",
+  DONE = "DONE",
+}
 
 const id = () =>
   text("id")
@@ -36,9 +41,7 @@ export const issues = sqliteTable("issues", {
   title: text("title").notNull(),
   userId: text("userId").notNull(),
   content: text("content").notNull(),
-  status: text("status", { enum: ["BACKLOG", "TODO", "INPROGRESS", "DONE"] })
-    .default("BACKLOG")
-    .notNull(),
+  status: text("status").default(IssueStatus.BACKLOG).notNull(),
   createdAt: createdAt(),
 });
 
