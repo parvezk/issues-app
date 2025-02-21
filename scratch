@@ -1,0 +1,14 @@
+//
+How to setup apollo graphql studio sandbox locally in a URQL project?
+
+Run `npm run dev` -> localhost:3000
+
+ACCESS GRAPHQL EXPLORER: http://localhost:3000/api/graphql
+
+For schema changes, run db migration -> db:push
+
+Drizzle Studio: npm run db:studio -> https://local.drizzle.studio
+
+TURSO DRIZZLE STUDIO:
+
+https://app.outerbase.com/
