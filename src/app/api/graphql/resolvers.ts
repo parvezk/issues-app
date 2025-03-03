@@ -22,7 +22,6 @@ const resolvers = {
   },
 
   createIssue: async ({ input }) => {
-    console.log("RESOLVER");
     const issueData = {
       title: input.title,
       content: input.content,
@@ -47,7 +46,6 @@ const resolvers = {
   }) => {
     const [updatedIssue] = await db
       .update(issues)
-      //@ts-ignore
       .set({ status })
       .where(eq(issues.id, id))
       .returning();

@@ -8,7 +8,7 @@ type User {
 enum IssueStatus {
   BACKLOG
   TODO
-  INPROGRESS
+  IN_PROGRESS
   DONE
 }
 

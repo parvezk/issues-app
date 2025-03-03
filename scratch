@@ -1,5 +1,6 @@
 //
 How to setup apollo graphql studio sandbox locally in a URQL project?
+Doc: https://www.apollographql.com/blog/how-to-use-apollo-sandbox-on-your-localhost
 
 Run `npm run dev` -> localhost:3000
 

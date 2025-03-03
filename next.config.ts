@@ -9,6 +9,14 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_GRAPHQL_API_URL:
       process.env.NEXT_PUBLIC_GRAPHQL_API_URL || "/api/graphql",
   },
+  async rewrites() {
+    return [
+      {
+        source: "/api/graphql",
+        destination: "/api/graphql",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -24,6 +24,7 @@ import {
   UPDATE_ISSUE_STATUS_MUTATION,
 } from "@/gql";
 import { IssueStatus } from "@/lib/schema";
+import Issue from "./components/Issue";
 
 const HomePage = () => {
   const [{ data, fetching, error }, replay] = useQuery({
@@ -35,7 +36,6 @@ const HomePage = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [issueTitle, setIssueTitle] = useState("");
   const [issueDescription, setIssueDescription] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState<IssueStatus>();
 
   const onCreate = async (close) => {
     const input = {
@@ -54,38 +54,6 @@ const HomePage = () => {
       console.log("Issue created", result.data.createIssue);
       close();
     }
-  };
-
-  const [, updateIssueStatus] = useMutation(UPDATE_ISSUE_STATUS_MUTATION);
-  // TODO: move out
-  const handleStatusChange = (issueId: string, newStatus: IssueStatus) => {
-    console.log("CALLED", issueId, newStatus);
-    updateIssueStatus(
-      { id: issueId, status: IssueStatus },
-      {
-        // Optimistically update the cache without refetching
-        update: (cache, mutationResult) => {
-          if (!mutationResult.data) return;
-
-          const currentData = cache.readQuery({
-            query: ISSUES_QUERY,
-            variables: { email: "admin@admin.com" },
-          });
-
-          if (currentData) {
-            const updatedIssues = currentData.issuesForUser.map((issue: any) =>
-              issue.id === issueId ? { ...issue, status: newStatus } : issue
-            );
-
-            cache.writeQuery({
-              query: ISSUES_QUERY,
-              variables: { email: "admin@admin.com" },
-              data: { issuesForUser: updatedIssues },
-            });
-          }
-        },
-      }
-    );
   };
 
   if (fetching) return <p>Loading...</p>;
@@ -113,23 +81,7 @@ const HomePage = () => {
             <h4>Status</h4>
           </li>
           {data?.issuesForUser.map((issue: any) => (
-            <li key={issue.id}>
-              <h4>{issue.title}</h4>
-              <p>{issue.content || "No content"}</p>
-              <div>
-                <select
-                  value={issue.status}
-                  onChange={(e) =>
-                    handleStatusChange(issue.id, IssueStatus[e.target.value])
-                  }
-                >
-                  <option value={IssueStatus.BACKLOG}>Backlog</option>
-                  <option value={IssueStatus.TODO}>Todo</option>
-                  <option value={IssueStatus.IN_PROGRESS}>In Progress</option>
-                  <option value={IssueStatus.DONE}>Done</option>
-                </select>
-              </div>
-            </li>
+            <Issue key={issue.id} issue={issue} />
           ))}
         </ol>
       </main>
