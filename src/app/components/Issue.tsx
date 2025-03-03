@@ -9,15 +9,13 @@ const Issue = ({ issue }) => {
 
   const handleStatusChange = (issueId: string, newStatus: IssueStatus) => {
     console.log("handleStatusChange called with:", issueId, newStatus);
-    updateIssueStatus({ id: issueId, status: newStatus }).then((result) => {
-      console.log("Mutation result:", result);
-    });
+    updateIssueStatus({ id: issueId, status: newStatus });
     /* updateIssueStatus(
       { id: issueId, status: newStatus },
       {
         // Optimistically update the cache without refetching
         update: (cache, mutationResult) => {
-          console.log("UPDATE cache", mutationResult);
+          
           if (!mutationResult.data) return;
 
           const currentData = cache.readQuery({
@@ -29,10 +27,7 @@ const Issue = ({ issue }) => {
             const updatedIssues = currentData.issuesForUser.map((issue: any) =>
               issue.id === issueId ? { ...issue, status: newStatus } : issue
             );
-            console.log(
-              "UPDATED",
-              updatedIssues.filter((i) => i.id === issueId)
-            );
+    
             cache.writeQuery({
               query: ISSUES_QUERY,
               variables: { email: "admin@admin.com" },
@@ -52,7 +47,6 @@ const Issue = ({ issue }) => {
           value={status || issue.status}
           onChange={(e) => {
             const newStatus = e.target.value as IssueStatus;
-            console.log("Selected new status:", newStatus);
             setStatus(newStatus);
             handleStatusChange(issue.id, newStatus);
           }}

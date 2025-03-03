@@ -46,7 +46,7 @@ const resolvers = {
   }) => {
     const [updatedIssue] = await db
       .update(issues)
-      .set({ status })
+      .set({ [issues.status.name]: status })
       .where(eq(issues.id, id))
       .returning();
 
