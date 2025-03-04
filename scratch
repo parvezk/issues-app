@@ -1,9 +1,3 @@
-//
-How to setup apollo graphql studio sandbox locally in a URQL project?
-Doc: https://www.apollographql.com/blog/how-to-use-apollo-sandbox-on-your-localhost
-
-Run `npm run dev` -> localhost:3000
-
 ACCESS GRAPHQL EXPLORER: http://localhost:3000/api/graphql
 
 For schema changes, run db migration -> db:push
@@ -14,5 +8,25 @@ TURSO DRIZZLE STUDIO:
 
 https://app.outerbase.com/
 
-// Tested POST API with query and variable with POSTMAN
+// Tested POST API with query and variable with POSTMAN and INSOMNIA
 https://main.d2ws6k7wewq3d5.amplifyapp.com/api/graphql
+
+How to setup apollo graphql studio sandbox locally in a URQL project?
+Doc: https://www.apollographql.com/blog/how-to-use-apollo-sandbox-on-your-localhost
+
+Tested with https://studio.apollographql.com/sandbox/explorer
+Updated CORS in next.config.ts to resolve apollo explorer cors issue
+Endpoints: https://main.d2ws6k7wewq3d5.amplifyapp.com/api/graphql
+`query IssuesForUser($email: String!) {
+    issuesForUser(email: $email) {
+      id
+      title
+      content
+      status
+    }
+  }
+ `
+
+`  {
+  "email": "admin@admin.com"
+}`

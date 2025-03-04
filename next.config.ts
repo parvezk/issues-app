@@ -32,14 +32,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.graphql$/,
-      exclude: /node_modules/,
-      use: ["raw-loader"],
-    });
-    return config;
-  },
   async rewrites() {
     return [
       {
