@@ -2,35 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { buildSchema, graphql } from "graphql";
 import resolvers from "./resolvers";
 import typeDefs from "./typeDefs";
-import Cors from "cors";
-
 /**
  * Defines the API route for handling GraphQL requests.
  */
-
-// Enable CORS
-const cors = Cors({
-  methods: ["POST", "GET", "HEAD", "OPTIONS"],
-  origin: "https://studio.apollographql.com",
-  credentials: true,
-});
-
-function runMiddleware(req: any, fn: Function) {
-  return new Promise((resolve, reject) => {
-    fn(req, (result: any) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-      return resolve(result);
-    });
-  });
-}
 
 // Create the GraphQL schema
 const schema = buildSchema(typeDefs);
 
 export async function POST(req: NextRequest) {
-  await runMiddleware(req, cors);
   try {
     const { query, variables } = await req.json();
 
