@@ -1,9 +1,4 @@
-/**
- * Type definitions for GraphQL Schema (Data Model) ./src/gql
- * Rename to schema.graphql file?
- */
-const schema = `#graphql
-
+#GraphQL schema definition
 type User {
   id: String!
   email: String!
@@ -19,6 +14,7 @@ enum IssueStatus {
 
 scalar ID
 
+# Issue type definition
 type Issue {
   id: String!
   title: String!
@@ -27,24 +23,21 @@ type Issue {
   status: IssueStatus!
   createdAt: String!
 }
-
+# Input type for creating an issue
 input CreateIssueInput {
   userId: String!
   title: String!
   content: String!
   status: IssueStatus!
 }
-
+# Query type definition
 type Query {
   users: [User!]!
   issuesForUser(email: String!): [Issue!]!
 }
-
+# Mutation type definition
 type Mutation {
   updateIssueStatus(id: String!, status: IssueStatus!): Issue!
   createIssue(input: CreateIssueInput!): Issue!
   deleteIssue(id: ID!): Issue!
 }
-`;
-
-export default schema;
