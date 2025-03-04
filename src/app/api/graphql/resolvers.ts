@@ -1,10 +1,9 @@
 import { db } from "../../../lib/db";
 import { eq } from "drizzle-orm";
 import { users, issues, IssueStatus } from "../../../lib/schema";
-
 /**
- * Processes incoming GraphQL queries/mutations
- * Interacts with the SQLite Turso DB using Drizzle ORM
+ * API Routes: Process incoming GraphQL queries/mutations requests
+ * Interact with the SQLite Turso DB using Drizzle ORM
  */
 
 const resolvers = {
@@ -23,37 +22,38 @@ const resolvers = {
 
   createIssue: async ({ input }) => {
     const issueData = {
-      title: input.title,
-      content: input.content,
+      ...input,
       status: input.status || IssueStatus.BACKLOG,
-      userId: input.userId,
     };
 
     const [newIssue] = await db.insert(issues).values(issueData).returning();
 
-    if (!newIssue) {
-      throw new Error("CUSTOM Failed to create issue");
-    }
+    if (!newIssue) throw new Error("CUSTOM Failed to create issue");
+
     return newIssue;
   },
 
-  updateIssueStatus: async ({
-    id,
-    status,
-  }: {
-    id: string;
-    status: IssueStatus;
-  }) => {
+  updateIssueStatus: async ({ id, status }) => {
     const [updatedIssue] = await db
       .update(issues)
       .set({ [issues.status.name]: status })
       .where(eq(issues.id, id))
       .returning();
 
-    if (!updatedIssue) {
-      throw new Error("Failed to update issue status");
-    }
+    if (!updatedIssue) throw new Error("Failed to update issue status");
+
     return updatedIssue;
+  },
+
+  deleteIssue: async ({ id }) => {
+    const [deletedIssue] = await db
+      .delete(issues)
+      .where(eq(issues.id, id))
+      .returning();
+
+    if (!deletedIssue) throw new Error("Failed to delete issue");
+
+    return deletedIssue;
   },
 
   users: async () => {

@@ -1,4 +1,8 @@
+/**
+ * Type definitions for GraphQL Schema ./src/gql
+ */
 const schema = `#graphql
+
 type User {
   id: String!
   email: String!
@@ -11,6 +15,8 @@ enum IssueStatus {
   IN_PROGRESS
   DONE
 }
+
+scalar ID
 
 type Issue {
   id: String!
@@ -36,6 +42,7 @@ type Query {
 type Mutation {
   updateIssueStatus(id: String!, status: IssueStatus!): Issue!
   createIssue(input: CreateIssueInput!): Issue!
+  deleteIssue(id: ID!): Issue!
 }
 `;
 

@@ -1,16 +1,63 @@
 import { useState } from "react";
 import { useMutation } from "urql";
-import { ISSUES_QUERY, UPDATE_ISSUE_STATUS_MUTATION } from "@/gql";
+import {
+  ISSUES_QUERY,
+  UPDATE_ISSUE_STATUS_MUTATION,
+  DELETE_ISSUE_MUTATION,
+} from "@/gql";
 import { IssueStatus } from "@/lib/schema";
 
-const Issue = ({ issue }) => {
+const Issue = ({ issue, replay }) => {
   const [status, setStatus] = useState(issue.status);
+  // GraphQL Mutations
   const [, updateIssueStatus] = useMutation(UPDATE_ISSUE_STATUS_MUTATION);
+  const [__, deleteIssue] = useMutation(DELETE_ISSUE_MUTATION);
 
   const handleStatusChange = (issueId: string, newStatus: IssueStatus) => {
-    console.log("handleStatusChange called with:", issueId, newStatus);
+    console.log("handleStatusChange:", issueId, newStatus);
     updateIssueStatus({ id: issueId, status: newStatus });
-    /* updateIssueStatus(
+  };
+
+  const onDelete = async (id) => {
+    const result = await deleteIssue({ id });
+
+    if (result.error) {
+      console.error("Failed to delete issue", result.error);
+    } else {
+      console.log("Issue deleted", result.data.deleteIssue);
+      // replay(); // Refresh the issues list
+    }
+  };
+
+  return (
+    <li key={issue.id}>
+      <h4>{issue.title}</h4>
+      <p>{issue.content || "No content"}</p>
+      <div>
+        <select
+          value={status || issue.status}
+          onChange={(e) => {
+            const newStatus = e.target.value as IssueStatus;
+            setStatus(newStatus);
+            handleStatusChange(issue.id, newStatus);
+          }}
+        >
+          <option value={IssueStatus.BACKLOG}>BACKLOG</option>
+          <option value={IssueStatus.TODO}>TODO</option>
+          <option value={IssueStatus.IN_PROGRESS}>IN_PROGRESS</option>
+          <option value={IssueStatus.DONE}>DONE</option>
+        </select>
+      </div>
+      <div>
+        <button onClick={() => onDelete(issue.id)}>Delete</button>
+      </div>
+    </li>
+  );
+};
+
+export default Issue;
+
+/* updateIssueStatus(
       { id: issueId, status: newStatus },
       {
         // Optimistically update the cache without refetching
@@ -37,28 +84,3 @@ const Issue = ({ issue }) => {
         },
       }
     ); */
-  };
-  return (
-    <li key={issue.id}>
-      <h4>{issue.title}</h4>
-      <p>{issue.content || "No content"}</p>
-      <div>
-        <select
-          value={status || issue.status}
-          onChange={(e) => {
-            const newStatus = e.target.value as IssueStatus;
-            setStatus(newStatus);
-            handleStatusChange(issue.id, newStatus);
-          }}
-        >
-          <option value={IssueStatus.BACKLOG}>BACKLOG</option>
-          <option value={IssueStatus.TODO}>TODO</option>
-          <option value={IssueStatus.IN_PROGRESS}>IN_PROGRESS</option>
-          <option value={IssueStatus.DONE}>DONE</option>
-        </select>
-      </div>
-    </li>
-  );
-};
-
-export default Issue;

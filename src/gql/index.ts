@@ -1,4 +1,10 @@
-import { CreateIssueMutation } from "./createIssueMutation";
-import { UPDATE_ISSUE_STATUS_MUTATION } from "./updateIssueStatusMutaton";
-import { ISSUES_QUERY } from "./issueQuery";
-export { ISSUES_QUERY, CreateIssueMutation, UPDATE_ISSUE_STATUS_MUTATION };
+import { CREATE_ISSUE_MUTATION } from "./CREATE_ISSUE_MUTATION";
+import { UPDATE_ISSUE_STATUS_MUTATION } from "./UPDATE_ISSUE_STATUS_MUTATION";
+import { DELETE_ISSUE_MUTATION } from "./DELETE_ISSUE_MUTATION";
+import { ISSUES_QUERY } from "./ISSUES_QUERY";
+export {
+  ISSUES_QUERY,
+  CREATE_ISSUE_MUTATION,
+  DELETE_ISSUE_MUTATION,
+  UPDATE_ISSUE_STATUS_MUTATION,
+};

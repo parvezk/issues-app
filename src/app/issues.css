@@ -10,7 +10,7 @@
 
 .issues-list > li {
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr;
+  grid-template-columns: 2fr 2fr 1fr 1fr;
   gap: 1rem;
   align-items: center;
 }
@@ -37,4 +37,8 @@ select {
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 100%;
+}
+
+button {
+  cursor: pointer;
 }

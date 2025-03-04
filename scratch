@@ -13,3 +13,5 @@ Drizzle Studio: npm run db:studio -> https://local.drizzle.studio
 TURSO DRIZZLE STUDIO:
 
 https://app.outerbase.com/
+
+// Tested API query and variable with POSTMAN

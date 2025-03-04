@@ -1,4 +1,5 @@
 import { gql } from "urql";
+// TODO: remove and test
 import { IssueStatus } from "@/lib/schema";
 
 export const UPDATE_ISSUE_STATUS_MUTATION = gql`
