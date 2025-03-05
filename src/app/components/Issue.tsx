@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useMutation } from "urql";
 import {
   ISSUES_QUERY,
