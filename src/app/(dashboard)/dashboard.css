@@ -1,0 +1,36 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  grid-template-rows: auto;
+  height: 100vh;
+}
+
+.dashboard aside {
+  grid-column: 1 / 2;
+}
+
+.dashboard main {
+  grid-column: 2 / 3;
+}
+
+.issues-header {
+  display: flex;
+}
+
+.sidebar {
+  background-color: #e2e2e2;
+  color: #000;
+  height: 100vh;
+
+  > div {
+    margin-bottom: 40px;
+  }
+
+  ul {
+    list-style-type: none;
+
+    li {
+      padding: 10px 0;
+    }
+  }
+}
