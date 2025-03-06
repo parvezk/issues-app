@@ -23,8 +23,6 @@ const CreateIssue = ({ isOpen, onOpenChange }) => {
       title: issueTitle,
       content: issueDescription,
       status: IssueStatus.BACKLOG,
-      // TODO: move to schema def
-      userId: "admin", // Replace with CTX; actual user ID
     };
 
     const result = await createNewIssue({ input });
@@ -46,7 +44,7 @@ const CreateIssue = ({ isOpen, onOpenChange }) => {
     >
       <ModalContent>
         {(onClose) => (
-          <>
+          <form>
             <ModalHeader className="flex flex-col gap-1">
               <span className="text-sm text-black/70">New issue</span>
             </ModalHeader>
@@ -90,7 +88,7 @@ const CreateIssue = ({ isOpen, onOpenChange }) => {
                 Create Issue
               </Button>
             </ModalFooter>
-          </>
+          </form>
         )}
       </ModalContent>
     </Modal>

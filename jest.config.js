@@ -5,7 +5,7 @@ module.exports = {
   preset: "ts-jest",
   testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
-  moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
+  moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: "<rootDir>/",
   }),
@@ -35,4 +35,9 @@ module.exports = {
   ],
   coverageReporters: ["text", "lcov"],
   testPathIgnorePatterns: ["/node_modules/", "/src/lib/", "/src/gql/"],
+  watchPlugins: [
+    "jest-watch-typeahead/filename",
+    "jest-watch-typeahead/testname",
+    "jest-watch-select-projects",
+  ],
 };

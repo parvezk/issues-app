@@ -6,6 +6,7 @@ export const CREATE_ISSUE_MUTATION = gql`
       createdAt
       id
       title
+      content
       status
     }
   }

@@ -1,3 +1,6 @@
+// move api folder out of app
+// rename libs to db
+
 ACCESS GRAPHQL EXPLORER: http://localhost:3000/api/graphql
 
 For schema changes, run db migration -> db:push
@@ -30,3 +33,28 @@ Endpoints: https://main.d2ws6k7wewq3d5.amplifyapp.com/api/graphql
 `  {
   "email": "admin@admin.com"
 }`
+
+//
+
+User: {
+issues: (user, args, ctx) => {
+if (!ctx.user)
+throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });
+
+      return db.query.issues.findMany({
+        where: eq(issues.userId, user.id),
+      });
+    },
+
+},
+Issue: {
+user: (issue, args, ctx) => {
+if (!ctx.user)
+throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });
+
+      return db.query.users.findFirst({
+        where: eq(users.id, issue.userId),
+      });
+    },
+
+},

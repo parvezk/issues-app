@@ -1,5 +1,6 @@
 import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
+import * as schema from "./schema";
 /**
  * Database configuration and connection setup
  * Uses Drizzle ORM to interact with TursoDB/SQLite
@@ -15,4 +16,4 @@ export const dbClient = createClient({
   authToken: authToken || undefined, // Use undefined if empty string
 });
 
-export const db = drizzle(dbClient);
+export const db = drizzle(dbClient, { schema });

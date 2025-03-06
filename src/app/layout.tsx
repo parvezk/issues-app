@@ -1,8 +1,12 @@
 "use client";
 
-import { Provider } from "urql";
-import urqlClient from "@/lib/urqlClient";
 import "./globals.css";
+import { Providers } from "./providers";
+import GQLProvider from "@/app/gqlProvider";
+/**
+ * Configures the urql client for making GraphQL requests from the client side.
+ * Sets up the GraphQL endpoint and caching strategies.
+ */
 
 export default function RootLayout({
   children,
@@ -11,9 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Provider value={urqlClient}>
-        <body>{children}</body>
-      </Provider>
+      <body>
+        <Providers>
+          <GQLProvider>{children}</GQLProvider>
+        </Providers>
+      </body>
     </html>
   );
 }

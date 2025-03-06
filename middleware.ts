@@ -13,7 +13,6 @@ export function middleware(req: NextRequest) {
 
   // Handle OPTIONS request (Preflight Request)
   if (req.method === "OPTIONS") {
-    console.log("[MIDDLEWARE] Handling OPTIONS Preflight Request");
     return new NextResponse(null, { status: 204, headers: responseHeaders });
   }
 

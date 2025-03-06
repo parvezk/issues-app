@@ -1,11 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
-import { buildSchema, graphql } from "graphql";
-import resolvers from "./resolvers";
-import typeDefs from "./typeDefs";
-// import typeDefs from "./schema.graphql";
 /**
  * Defines the API route for handling GraphQL requests.
  */
+import { NextRequest, NextResponse } from "next/server";
+import { buildSchema, graphql } from "graphql";
+// locals
+import resolvers from "./resolvers";
+import typeDefs from "./typeDefs";
+import { getUserFromToken } from "@/utils/auth";
+// import typeDefs from "./schema.graphql";
 
 // Create the GraphQL schema
 const schema = buildSchema(typeDefs);
@@ -14,17 +16,23 @@ export async function POST(req: NextRequest) {
   try {
     const { query, variables } = await req.json();
 
+    const context = async (req: NextRequest) => {
+      const user = await getUserFromToken(
+        req.headers.get("authorization") ?? ""
+      );
+
+      return { req, user };
+    };
+
     const response = await graphql({
       schema,
       source: query,
       rootValue: resolvers,
       variableValues: variables,
+      contextValue: await context(req),
     });
 
     const headers = new Headers();
-    headers.set("Access-Control-Allow-Origin", "*");
-    headers.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
-    headers.set("Access-Control-Allow-Headers", "Content-Type");
 
     return NextResponse.json(response, { headers });
   } catch (error) {

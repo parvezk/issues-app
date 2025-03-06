@@ -14,7 +14,6 @@ const Issue = ({ issue, replay }) => {
   const [__, deleteIssue] = useMutation(DELETE_ISSUE_MUTATION);
 
   const handleStatusChange = (issueId: string, newStatus: IssueStatus) => {
-    console.log("handleStatusChange:", issueId, newStatus);
     updateIssueStatus({ id: issueId, status: newStatus });
   };
 
@@ -57,6 +56,7 @@ const Issue = ({ issue, replay }) => {
 
 export default Issue;
 
+// caching updated data
 /* updateIssueStatus(
       { id: issueId, status: newStatus },
       {
