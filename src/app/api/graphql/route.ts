@@ -7,6 +7,7 @@ import { buildSchema, graphql } from "graphql";
 import resolvers from "./resolvers";
 import typeDefs from "./typeDefs";
 import { getUserFromToken } from "@/utils/auth";
+
 // import typeDefs from "./schema.graphql";
 
 // Create the GraphQL schema
@@ -33,6 +34,9 @@ export async function POST(req: NextRequest) {
     });
 
     const headers = new Headers();
+    headers.set("Access-Control-Allow-Origin", "*");
+    headers.set("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+    headers.set("Access-Control-Allow-Headers", "Content-Type");
 
     return NextResponse.json(response, { headers });
   } catch (error) {

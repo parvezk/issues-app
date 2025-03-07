@@ -1,7 +1,7 @@
 "use client";
 
 import "./globals.css";
-import { Providers } from "./providers";
+import Providers from "./providers";
 import GQLProvider from "@/app/gqlProvider";
 /**
  * Configures the urql client for making GraphQL requests from the client side.

@@ -3,14 +3,14 @@ import { eq, and } from "drizzle-orm";
 import { users, issues, IssueStatus } from "@/lib/schema";
 import { GraphQLError } from "graphql";
 import { signin, signup } from "@/utils/auth";
-import { user } from "@nextui-org/react";
+import { GQLContext } from "@/types/GQLContext";
 /**
  * API Routes: Process incoming GraphQL queries/mutations requests
  * Interact with the SQLite Turso DB using Drizzle ORM
  */
 
 const resolvers = {
-  issues: async (_, context) => {
+  issues: async (_, context: GQLContext) => {
     if (!context.user)
       throw new GraphQLError("ISSUES UNAUTHORIZED", {
         extensions: { code: 401 },
@@ -22,7 +22,7 @@ const resolvers = {
       .where(eq(issues.userId, context.user.id));
   },
 
-  createIssue: async ({ input }, context) => {
+  createIssue: async ({ input }, context: GQLContext) => {
     if (!context.user)
       throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });
     console.log("createIssue", input);
@@ -37,7 +37,7 @@ const resolvers = {
     return newIssue;
   },
 
-  updateIssueStatus: async ({ id, status }, context) => {
+  updateIssueStatus: async ({ id, status }, context: GQLContext) => {
     if (!context.user)
       throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });
     const [updatedIssue] = await db
@@ -50,7 +50,7 @@ const resolvers = {
     return updatedIssue;
   },
 
-  deleteIssue: async ({ id }, context) => {
+  deleteIssue: async ({ id }, context: GQLContext) => {
     if (!context.user)
       throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });
 

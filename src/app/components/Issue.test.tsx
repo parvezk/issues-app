@@ -24,6 +24,6 @@ describe("CreateIssue", () => {
     );
     // screen.debug();
     const title = screen.getByText(/issue title/i);
-    // expect(title).toBeInTheDocument();
+    expect(title).toBeInTheDocument();
   });
 });

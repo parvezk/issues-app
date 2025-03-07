@@ -24,8 +24,10 @@
       "@/*": ["./src/*"],
       "@/api/*": ["src/app/api/*"],
       "@/app/*": ["src/app/*"],
+      "@/context/*": ["src/app/context/*"],
       "@/components/*": ["src/app/components/*"],
       "@/lib/*": ["src/lib/*"],
+      "@/types/*": ["src/types/*"],
       "@/gql/*": ["src/gql/*"],
       "@/utils/*": ["src/utils/*"]
     }

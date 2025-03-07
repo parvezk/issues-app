@@ -1,5 +1,8 @@
+import React, { useEffect } from "react";
+
 import { Boxes, LayoutGrid, Settings } from "lucide-react";
 import Link from "next/link";
+import { useThemeContext } from "@/context/ThemeContext";
 
 const links = [
   { href: "/", name: "Issues", Icon: Boxes },
@@ -8,9 +11,21 @@ const links = [
 ];
 
 const Sidebar = () => {
+  const { theme, toggleTheme } = useThemeContext();
+
+  useEffect(() => {
+    document.body.setAttribute("data-theme", theme);
+  }, [theme]);
+
+  const renderText = (theme) => {
+    let txt = theme === "light" ? "dark" : "light";
+    return txt.charAt(0).toUpperCase() + txt.slice(1);
+  };
+
   return (
     <div className="sidebar">
       <div>Parallel</div>
+      <button onClick={toggleTheme}>{`${renderText(theme)} Theme`} </button>
       <ul>
         {links.map((link) => {
           return (

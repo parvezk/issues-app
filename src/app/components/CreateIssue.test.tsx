@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { Provider, createClient, cacheExchange, fetchExchange } from "urql";
 import CreateIssue from "./CreateIssue";
 
@@ -17,7 +17,7 @@ describe("CreateIssue", () => {
       </Provider>
     );
 
-    // const linkElement = screen.getByText(/create issue/i);
+    // const linkElement = screen.getByText(/new issue/i);
     // expect(linkElement).toBeInTheDocument();
   });
 });
