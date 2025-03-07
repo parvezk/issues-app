@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import Sidebar from "./Sidebar";
+import Sidebar from "@/components/Sidebar";
 import { isAuth } from "@/utils/token";
 import { redirect } from "next/navigation";
 import "./dashboard.css";
