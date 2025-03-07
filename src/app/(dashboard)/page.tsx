@@ -25,7 +25,7 @@ const IssuesPage = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   if (error) return <p>Error: {error.message}</p>;
-
+  console.log("DATA", data);
   return (
     <div>
       <header>

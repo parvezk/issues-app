@@ -22,6 +22,10 @@ const resolvers = {
       .where(eq(issues.userId, context.user.id));
   },
 
+  users: async (_, context: GQLContext) => {
+    return await db.select().from(users).where(eq(users.id, context.user.id));
+  },
+
   createIssue: async ({ input }, context: GQLContext) => {
     if (!context.user)
       throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });

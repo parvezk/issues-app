@@ -21,7 +21,8 @@ export async function POST(req: NextRequest) {
       const user = await getUserFromToken(
         req.headers.get("authorization") ?? ""
       );
-
+      console.log("PK req", req);
+      console.log("PK user", user);
       return { req, user };
     };
 
