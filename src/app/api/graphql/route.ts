@@ -6,8 +6,8 @@ import { buildSchema, graphql } from "graphql";
 // locals
 import resolvers from "./resolvers";
 import typeDefs from "./typeDefs";
+import header from "@/utils/headers";
 import { getUserFromToken } from "@/utils/auth";
-
 // import typeDefs from "./schema.graphql";
 
 // Create the GraphQL schema
@@ -33,13 +33,7 @@ export async function POST(req: NextRequest) {
       contextValue: await context(req),
     });
 
-    const headers = new Headers({
-      "Access-Control-Allow-Credentials": "true",
-      "Access-Control-Allow-Origin": "https://studio.apollographql.com",
-      "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-      "Access-Control-Allow-Headers":
-        "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization",
-    });
+    const headers = new Headers(header);
 
     return NextResponse.json(response, { headers });
   } catch (error) {
@@ -54,13 +48,7 @@ export async function POST(req: NextRequest) {
 export async function OPTIONS() {
   const response = new NextResponse(null, {
     status: 204,
-    headers: {
-      "Access-Control-Allow-Credentials": "true",
-      "Access-Control-Allow-Origin": "https://studio.apollographql.com",
-      "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
-      "Access-Control-Allow-Headers":
-        "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization",
-    },
+    headers: header,
   });
   return response;
 }
