@@ -5,7 +5,7 @@ import {
   UPDATE_ISSUE_STATUS_MUTATION,
   DELETE_ISSUE_MUTATION,
 } from "@/gql";
-import { IssueStatus } from "@/lib/schema";
+import { IssueStatus } from "@/db/schema";
 
 const Issue = ({ issue, replay }) => {
   const [status, setStatus] = useState(issue.status);
@@ -62,7 +62,7 @@ export default Issue;
       {
         // Optimistically update the cache without refetching
         update: (cache, mutationResult) => {
-          
+
           if (!mutationResult.data) return;
 
           const currentData = cache.readQuery({
@@ -74,7 +74,7 @@ export default Issue;
             const updatedIssues = currentData.issuesForUser.map((issue: any) =>
               issue.id === issueId ? { ...issue, status: newStatus } : issue
             );
-    
+
             cache.writeQuery({
               query: ISSUES_QUERY,
               variables: { email: "admin@admin.com" },

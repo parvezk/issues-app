@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react";
 import { useMutation } from "urql";
 import { CREATE_ISSUE_MUTATION } from "@/gql";
-import { IssueStatus } from "@/lib/schema";
+import { IssueStatus } from "@/db/schema";
 
 const CreateIssue = ({ isOpen, onOpenChange }) => {
   const [issueTitle, setIssueTitle] = useState("");

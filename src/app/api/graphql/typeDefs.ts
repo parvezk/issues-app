@@ -42,7 +42,7 @@ input CreateIssueInput {
 }
 
 type Query {
-  users: [User!]!
+  user: User!
   issues: [Issue!]!
   issuesForUser(email: String!): [Issue!]!
 }

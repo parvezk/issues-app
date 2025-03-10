@@ -1,8 +1,9 @@
 "use client";
 import React, { useEffect } from "react";
-import Sidebar from "@/components/Sidebar";
 import { isAuth } from "@/utils/token";
 import { redirect } from "next/navigation";
+import Sidebar from "@/components/Sidebar";
+import TopBar from "@/components/TopBar";
 import "./dashboard.css";
 
 const DashboardLayout = ({ children }) => {
@@ -13,11 +14,14 @@ const DashboardLayout = ({ children }) => {
   }, []);
 
   return (
-    <div className="dashboard">
-      <aside>
-        <Sidebar />
-      </aside>
-      <main>{children}</main>
+    <div className="container">
+      <TopBar />
+      <section className="dashboard">
+        <aside>
+          <Sidebar />
+        </aside>
+        <main>{children}</main>
+      </section>
     </div>
   );
 };

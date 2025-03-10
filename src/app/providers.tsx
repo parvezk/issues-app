@@ -5,10 +5,10 @@
 // }
 
 import React from "react";
-import { ThemeProvider } from "./context/ThemeContext";
+import { UserProvider } from "./context/UserContext";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
-  return <ThemeProvider>{children}</ThemeProvider>;
+  return <UserProvider>{children}</UserProvider>;
 };
 
 export default Providers;

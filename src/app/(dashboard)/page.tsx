@@ -1,31 +1,23 @@
 "use client";
 
 import { Spinner, Tooltip, useDisclosure } from "@nextui-org/react";
-import { PlusIcon } from "lucide-react";
 import { useQuery } from "urql";
+import { PlusIcon } from "lucide-react";
 //local
-// import { ISSUES_QUERY } from "@/gql";
-import { ISSUES_QUERY } from "@/gql/ISSUES_QUERY";
 import Issue from "@/components/Issue";
 import CreateIssue from "@/components/CreateIssue";
 import IssuesHeader from "@/app/components/IssuesHeader";
-import "./issues.css";
+import { ISSUES_QUERY } from "@/gql/ISSUES_QUERY";
 
 const IssuesPage = () => {
-  /*  const [{ data, fetching, error }, replay] = useQuery({
-    query: ISSUES_QUERY,
-    variables: { email: "admin@admin.com" },
-  });
- */
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [{ data, fetching, error }, replay] = useQuery({
     query: ISSUES_QUERY,
   });
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
   if (error) return <p>Error: {error.message}</p>;
-  console.log("DATA", data);
+
   return (
     <div>
       <header>

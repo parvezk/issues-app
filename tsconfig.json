@@ -26,7 +26,7 @@
       "@/app/*": ["src/app/*"],
       "@/context/*": ["src/app/context/*"],
       "@/components/*": ["src/app/components/*"],
-      "@/lib/*": ["src/lib/*"],
+      "@/lib/*": ["src/db/*"],
       "@/types/*": ["src/types/*"],
       "@/gql/*": ["src/gql/*"],
       "@/utils/*": ["src/utils/*"]

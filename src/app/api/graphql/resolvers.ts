@@ -1,6 +1,6 @@
-import { db } from "@/lib/db";
+import { db } from "@/db/db";
 import { eq, and } from "drizzle-orm";
-import { users, issues, IssueStatus } from "@/lib/schema";
+import { users, issues, IssueStatus } from "@/db/schema";
 import { GraphQLError } from "graphql";
 import { signin, signup } from "@/utils/auth";
 import { GQLContext } from "@/types/GQLContext";
@@ -22,14 +22,25 @@ const resolvers = {
       .where(eq(issues.userId, context.user.id));
   },
 
-  users: async (_, context: GQLContext) => {
-    return await db.select().from(users).where(eq(users.id, context.user.id));
+  user: async (_, context: GQLContext) => {
+    if (!context.user)
+      throw new GraphQLError("UNAUTHORIZED", {
+        extensions: { code: 401 },
+      });
+
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, context.user.id),
+    });
+
+    if (!user) throw new Error("User not found");
+
+    return user;
   },
 
   createIssue: async ({ input }, context: GQLContext) => {
     if (!context.user)
       throw new GraphQLError("UNAUTHORIZED", { extensions: { code: 401 } });
-    console.log("createIssue", input);
+
     const issueData = {
       ...input,
       userId: context.user.id,
@@ -38,6 +49,7 @@ const resolvers = {
 
     const [newIssue] = await db.insert(issues).values(issueData).returning();
     if (!newIssue) throw new Error("CUSTOM Failed to create issue");
+    console.log("issue created", newIssue);
     return newIssue;
   },
 
