@@ -1,14 +1,13 @@
-// import { NextUIProvider } from "@nextui-org/react";
-
-// export function Providers({ children }: { children: React.ReactNode }) {
-//   return <NextUIProvider>{children}</NextUIProvider>;
-// }
-
 import React from "react";
-import { UserProvider } from "./context/UserContext";
+import GQLProvider from "@/app/gqlProvider";
+import { UserProvider } from "@/app/context/UserContext";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
-  return <UserProvider>{children}</UserProvider>;
+  return (
+    <GQLProvider>
+      <UserProvider>{children}</UserProvider>
+    </GQLProvider>
+  );
 };
 
 export default Providers;

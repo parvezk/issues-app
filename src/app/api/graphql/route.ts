@@ -5,9 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { buildSchema, graphql } from "graphql";
 // locals
 import resolvers from "./resolvers";
-import typeDefs from "./typeDefs";
 import header from "@/utils/headers";
 import { getUserFromToken } from "@/utils/auth";
+import typeDefs from "./typeDefs";
 // import typeDefs from "./schema.graphql";
 
 // Create the GraphQL schema

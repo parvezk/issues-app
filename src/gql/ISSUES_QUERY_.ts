@@ -1,4 +1,5 @@
-import { gql } from "urql";
+// import { gql } from "urql";
+import { gql } from "graphql-tag";
 
 export const ISSUES_QUERY = gql`
   query IssuesForUser($email: String!) {

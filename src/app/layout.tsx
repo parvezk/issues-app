@@ -1,7 +1,8 @@
 "use client";
+import { useState, useEffect } from "react";
 
 import Providers from "./providers";
-import GQLProvider from "@/app/gqlProvider";
+
 import "./reset.css";
 import "./globals.css";
 /**
@@ -14,13 +15,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <html lang="en">
-      <body>
-        <Providers>
-          <GQLProvider>{children}</GQLProvider>
-        </Providers>
-      </body>
+      <body>{isClient ? <Providers>{children}</Providers> : <></>}</body>
     </html>
   );
 }

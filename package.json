@@ -12,6 +12,7 @@
     "db:studio": "drizzle-kit studio",
     "test": "node --no-deprecation ./node_modules/.bin/jest",
     "test:coverage": "jest --coverage",
+    "test:coverage:changed": "jest --coverage --onlyChanged",
     "test:watch": "jest --watch",
     "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch",
     "prepare": "husky"
@@ -37,16 +38,18 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sqlite3": "^5.1.7",
-    "urql": "^4.2.1"
+    "urql": "^4.2.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^29.5.14",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/testing-library__user-event": "^4.1.1",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "drizzle-kit": "^0.30.1",

@@ -14,7 +14,7 @@ const DashboardLayout = ({ children }) => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="container" suppressHydrationWarning={true}>
       <TopBar />
       <section className="dashboard">
         <aside>

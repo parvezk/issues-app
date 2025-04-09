@@ -7,8 +7,8 @@ import {
 } from "@/gql";
 import { IssueStatus } from "@/db/schema";
 
-const Issue = ({ issue, replay }) => {
-  const [status, setStatus] = useState(issue.status);
+const Issue = ({ issue }) => {
+  const [issueStatus, setIssueStatus] = useState(issue.status);
   // GraphQL Mutations
   const [, updateIssueStatus] = useMutation(UPDATE_ISSUE_STATUS_MUTATION);
   const [__, deleteIssue] = useMutation(DELETE_ISSUE_MUTATION);
@@ -17,38 +17,43 @@ const Issue = ({ issue, replay }) => {
     updateIssueStatus({ id: issueId, status: newStatus });
   };
 
-  const onDelete = async (id) => {
+  const onDelete = async (id: string) => {
     const result = await deleteIssue({ id });
 
-    if (result.error) {
-      console.error("Failed to delete issue", result.error);
-    } else {
-      console.log("Issue deleted", result.data.deleteIssue);
-      // replay(); // Refresh the issues list
-    }
+    if (result.error) console.error("Failed to delete issue", result.error);
+    else console.log("Issue deleted successfully", result.data.deleteIssue);
+    // replay(); // Refresh the issues list
   };
 
+  const { id, title, content, status } = issue;
+  const { BACKLOG, TODO, IN_PROGRESS, DONE } = IssueStatus;
   return (
-    <li key={issue.id}>
-      <h4>{issue.title}</h4>
-      <p>{issue.content || "No content"}</p>
+    <li key={id}>
+      <h4>{title}</h4>
+      <p>{content}</p>
       <div>
         <select
-          value={status || issue.status}
+          value={issueStatus}
           onChange={(e) => {
             const newStatus = e.target.value as IssueStatus;
-            setStatus(newStatus);
-            handleStatusChange(issue.id, newStatus);
+            setIssueStatus(newStatus);
+            handleStatusChange(id, newStatus);
           }}
         >
-          <option value={IssueStatus.BACKLOG}>BACKLOG</option>
-          <option value={IssueStatus.TODO}>TODO</option>
-          <option value={IssueStatus.IN_PROGRESS}>IN_PROGRESS</option>
-          <option value={IssueStatus.DONE}>DONE</option>
+          <option value={BACKLOG}>BACKLOG</option>
+          <option value={TODO}>TODO</option>
+          <option value={IN_PROGRESS}>IN_PROGRESS</option>
+          <option value={DONE}>DONE</option>
         </select>
       </div>
       <div>
-        <button onClick={() => onDelete(issue.id)}>Delete</button>
+        <button
+          name="delete"
+          className="deleteBtn"
+          onClick={() => onDelete(id)}
+        >
+          Delete
+        </button>
       </div>
     </li>
   );

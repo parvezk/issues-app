@@ -1,5 +1,4 @@
 "use client";
-
 import { Spinner, Tooltip, useDisclosure } from "@nextui-org/react";
 import { useQuery } from "urql";
 import { PlusIcon } from "lucide-react";
@@ -38,7 +37,7 @@ const IssuesPage = () => {
           </li>
           {fetching && <Spinner />}
           {data?.issues.map((issue: any) => (
-            <Issue key={issue.id} issue={issue} replay={replay} />
+            <Issue key={issue.id} issue={issue} />
           ))}
         </ol>
       </main>

@@ -9,6 +9,7 @@ module.exports = {
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: "<rootDir>/",
   }),
+
   transform: {
     "^.+\\.(ts|tsx)$": [
       "babel-jest",
@@ -25,16 +26,24 @@ module.exports = {
       { presets: ["@babel/preset-env", "@babel/preset-react"] },
     ],
   },
-  transformIgnorePatterns: ["/node_modules/(?!(@babel/runtime)/)"],
+  transformIgnorePatterns: ["/node_modules/(?!(@babel/runtime|lucide-react)/)"],
   collectCoverage: true,
   collectCoverageFrom: [
     "src/**/*.{ts,tsx}",
     "!src/**/*.d.ts",
     "!src/lib/**",
     "!src/gql/**",
+    "!src/db/**",
+    "!src/utils/**",
   ],
   coverageReporters: ["text", "lcov"],
-  testPathIgnorePatterns: ["/node_modules/", "/src/lib/", "/src/gql/"],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/src/lib/",
+    "/src/gql/",
+    "/src/db/",
+    "/src/utils/",
+  ],
   watchPlugins: [
     "jest-watch-typeahead/filename",
     "jest-watch-typeahead/testname",

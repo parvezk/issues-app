@@ -45,7 +45,6 @@ body {
   .top-right {
     display: flex;
     align-items: center;
-    /* align-content: center; */
     gap: 10px;
   }
 }

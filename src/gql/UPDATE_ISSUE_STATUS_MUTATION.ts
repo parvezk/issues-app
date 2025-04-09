@@ -1,4 +1,5 @@
-import { gql } from "urql";
+// import { gql } from "urql";
+import { gql } from "graphql-tag";
 // TODO: remove and test
 import { IssueStatus } from "@/db/schema";
 

@@ -1,5 +1,5 @@
 "use client";
-import { PropsWithChildren, useMemo } from "react";
+import React, { PropsWithChildren, useMemo } from "react";
 import { Provider, createClient, cacheExchange, fetchExchange } from "urql";
 //local
 import { getToken } from "@/utils/token";
@@ -12,7 +12,6 @@ export default function GQLProvider({ children }: PropsWithChildren) {
 
       fetchOptions: () => {
         const token = getToken();
-
         return token
           ? {
               headers: { authorization: `Bearer ${token}` },

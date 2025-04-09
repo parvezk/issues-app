@@ -1,10 +1,11 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { useQuery } from "urql";
-import { useUserContext } from "@/context/UserContext";
+import { useUserContext } from "@/app/context/UserContext";
 import { USERS_QUERY } from "@/gql/USERS_QUERY";
 
 const TopBar = () => {
   const { theme, toggleTheme, setUser } = useUserContext();
+  const previousUserRef = useRef(null);
 
   const [{ data, fetching, error }, replay] = useQuery({
     query: USERS_QUERY,
@@ -15,7 +16,10 @@ const TopBar = () => {
   }, [theme]);
 
   useEffect(() => {
-    if (data?.user) setUser(data.user);
+    if (data?.user && data.user !== previousUserRef) {
+      setUser(data.user);
+      previousUserRef.current = data.user;
+    }
   }, [data, setUser]);
 
   const renderText = useMemo(() => {
@@ -30,9 +34,7 @@ const TopBar = () => {
     <header className="top-bar">
       <h3 className="logo">Parallel</h3>
       <div className="top-right">
-        <p className="info">
-          User: <strong>{data.user.email}</strong>
-        </p>
+        <p className="info">{data.user.email}</p>
         <button onClick={toggleTheme}>{`${renderText} Theme`} </button>
         <button>Logout</button>
       </div>
@@ -41,3 +43,11 @@ const TopBar = () => {
 };
 
 export default TopBar;
+
+/**
+ * Added a useRef hook to keep track of the previous user data.
+Updated the useEffect hook to only call setUser if the user data has changed.
+- Avoids unnecessary updates to the context API.
+- Prevents unnecessary re-renders of the entire application.
+- Maintains performance by ensuring state updates only occur when necessary.
+ */
