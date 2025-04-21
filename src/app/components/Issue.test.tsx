@@ -1,11 +1,14 @@
 import React from "react";
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act } from "@/utils/testUtils";
 import userEvent from "@testing-library/user-event";
-import { Provider, createClient, cacheExchange, fetchExchange } from "urql";
+import { useMutation } from "urql";
 import Issue from "./Issue";
 import { IssueStatus } from "@/db/schema";
 
-const urql = require("urql");
+jest.mock("urql", () => ({
+  ...jest.requireActual("urql"),
+  useMutation: jest.fn(),
+}));
 
 let fetchMock: jest.Mock,
   consoleLogSpy: jest.SpyInstance,
@@ -18,49 +21,28 @@ const issue = {
   status: "BACKLOG",
 };
 
-const client = createClient({
-  url: "http://localhost:4000/graphql",
-  exchanges: [cacheExchange, fetchExchange],
-});
-
-const renderIssue = () =>
-  render(
-    <Provider value={client}>
-      <Issue issue={issue} />
-    </Provider>
-  );
-
 describe("Issue", () => {
   beforeAll(() => {
-    // Mock fetch function
     fetchMock = jest.fn();
     (global as any).fetch = fetchMock;
+    (useMutation as jest.Mock).mockReturnValue([{}, jest.fn()]);
 
-    // Mock console.error and console.log
     consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {});
-
-    // Mock useMutation from urql
-    jest
-      .spyOn(urql, "useMutation")
-      .mockImplementation(() => [
-        jest.fn(),
-        jest.fn().mockResolvedValue({ data: {}, error: {} }),
-      ]);
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  test("renders component", () => {
-    renderIssue();
+  test("renders without error", () => {
+    render(<Issue issue={issue} />);
     expect(screen.getByText("issue title")).toBeInTheDocument();
     expect(screen.getByText("content")).toBeInTheDocument();
   });
 
   test("changes issue status", async () => {
-    renderIssue();
+    render(<Issue issue={issue} />);
     const select = screen.getByRole("combobox");
     expect(select).toBeInTheDocument();
 
@@ -68,27 +50,31 @@ describe("Issue", () => {
     expect(select).toHaveValue(IssueStatus.TODO);
   });
 
-  test("deletes issue", async () => {
-    renderIssue();
+  test("deletes issue here", async () => {
+    const mockDeleteIssue = jest.fn().mockResolvedValue({
+      data: { deleteIssue: { id: issue.id } },
+    });
+
+    // Update the useMutation mock to return the mockDeleteIssue function
+    (useMutation as jest.Mock).mockReturnValue([{}, mockDeleteIssue]);
+    render(<Issue issue={issue} />);
     const deleteButton = screen.getByRole("button", { name: /delete/i });
     expect(deleteButton).toBeInTheDocument();
+
     await userEvent.click(deleteButton);
     expect(deleteButton).not.toBeDisabled();
+
+    expect(mockDeleteIssue).toHaveBeenCalledTimes(1);
+    expect(mockDeleteIssue).toHaveBeenCalledWith({ id: issue.id });
   });
 
   test("changes issue status", async () => {
-    renderIssue();
+    render(<Issue issue={issue} />);
     const select = screen.getByRole("combobox");
     expect(select).toBeInTheDocument();
 
     await userEvent.selectOptions(select, IssueStatus.TODO);
     expect(select).toHaveValue(IssueStatus.TODO);
-  });
-
-  test("deletes issue", async () => {
-    renderIssue();
-    const deleteButton = screen.getByRole("button", { name: /delete/i });
-    await userEvent.click(deleteButton);
   });
 
   test("logs error when delete issue fails", async () => {
@@ -96,9 +82,9 @@ describe("Issue", () => {
     const mockDeleteIssue = jest.fn().mockResolvedValue({
       error: new Error("Failed to delete issue"),
     });
-    urql.useMutation.mockReturnValue([{}, mockDeleteIssue]);
+    (useMutation as jest.Mock).mockReturnValue([{}, mockDeleteIssue]);
 
-    renderIssue();
+    render(<Issue issue={issue} />);
     const deleteButton = screen.getByRole("button", { name: /delete/i });
     await userEvent.click(deleteButton);
 
@@ -113,9 +99,9 @@ describe("Issue", () => {
     const mockDeleteIssue = jest.fn().mockResolvedValue({
       data: { deleteIssue: { id: "id" } },
     });
-    urql.useMutation.mockReturnValue([{}, mockDeleteIssue]);
+    (useMutation as jest.Mock).mockReturnValue([{}, mockDeleteIssue]);
 
-    renderIssue();
+    render(<Issue issue={issue} />);
     const deleteButton = screen.getByRole("button", { name: /delete/i });
     await userEvent.click(deleteButton);
 

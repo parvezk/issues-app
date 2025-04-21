@@ -26,6 +26,11 @@ module.exports = {
       { presets: ["@babel/preset-env", "@babel/preset-react"] },
     ],
   },
+  globals: {
+    "ts-jest": {
+      useESM: true, // Enable ESM support in ts-jest
+    },
+  },
   transformIgnorePatterns: ["/node_modules/(?!(@babel/runtime|lucide-react)/)"],
   collectCoverage: true,
   collectCoverageFrom: [

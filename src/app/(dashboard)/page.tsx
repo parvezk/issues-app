@@ -5,7 +5,6 @@ import { PlusIcon } from "lucide-react";
 //local
 import Issue from "@/components/Issue";
 import CreateIssue from "@/components/CreateIssue";
-import IssuesHeader from "@/app/components/IssuesHeader";
 import { ISSUES_QUERY } from "@/gql/ISSUES_QUERY";
 
 const IssuesPage = () => {
@@ -20,13 +19,14 @@ const IssuesPage = () => {
   return (
     <div>
       <header>
-        <IssuesHeader title="All Issues">
+        <header className="issues-header">
+          <h4>All Issues</h4>
           <Tooltip content="New Issue">
             <button onClick={onOpen}>
               <PlusIcon size={14} />
             </button>
           </Tooltip>
-        </IssuesHeader>
+        </header>
       </header>
       <main>
         <ol className="issues-list">

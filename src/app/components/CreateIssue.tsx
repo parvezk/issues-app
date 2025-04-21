@@ -1,13 +1,4 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Textarea,
-} from "@nextui-org/react";
 import { useMutation } from "urql";
 import { CREATE_ISSUE_MUTATION } from "@/gql";
 import { IssueStatus } from "@/db/schema";
@@ -15,7 +6,6 @@ import { IssueStatus } from "@/db/schema";
 const CreateIssue = ({ isOpen, onOpenChange }) => {
   const [issueTitle, setIssueTitle] = useState("");
   const [issueDescription, setIssueDescription] = useState("");
-
   const [_, createNewIssue] = useMutation(CREATE_ISSUE_MUTATION);
 
   const onCreate = async (close) => {
@@ -36,62 +26,53 @@ const CreateIssue = ({ isOpen, onOpenChange }) => {
   };
 
   return (
-    <Modal
-      size="2xl"
-      isOpen={isOpen}
-      placement="top-center"
-      onOpenChange={onOpenChange}
+    <div
+      className={`modal ${isOpen ? "modal-open" : "modal-closed"}`}
+      role="dialog"
     >
-      <ModalContent>
-        {(onClose) => (
-          <form>
-            <ModalHeader className="flex flex-col gap-1">
-              <span className="text-sm text-black/70">New issue</span>
-            </ModalHeader>
-            <ModalBody>
-              <div>
-                <input
-                  autoFocus
-                  type="text"
-                  className="w-full border-none outline-none focus:outline-none focus:border-none py-2 text-xl text-black/70"
-                  placeholder="Issue Title"
-                  value={issueTitle}
-                  onChange={(e) => setIssueTitle(e.target.value)}
-                />
-              </div>
-              <div className="bg-white">
-                <Textarea
-                  size="lg"
-                  variant="bordered"
-                  placeholder="Issue description"
-                  className="bg-white"
-                  value={issueDescription}
-                  onChange={(e) => setIssueDescription(e.target.value)}
-                  classNames={{
-                    inputWrapper: "bg-white border-none shadow-none p-0",
-                    base: "bg-white p-0",
-                    input: "bg-white p-0",
-                    innerWrapper: "bg-white p-0",
-                  }}
-                />
-              </div>
-            </ModalBody>
-            <ModalFooter className="border-t">
-              <Button variant="ghost" onPress={() => onOpenChange()}>
-                Cancel
-              </Button>
-              <Button
-                variant="solid"
-                className="bg-black text-white"
-                onPress={() => onCreate(onClose)}
-              >
-                Create Issue
-              </Button>
-            </ModalFooter>
-          </form>
-        )}
-      </ModalContent>
-    </Modal>
+      <div className="modal-content">
+        <form>
+          <div className="modal-header">
+            <span>New Issue</span>
+          </div>
+          <div className="modal-body">
+            <div>
+              <input
+                autoFocus
+                required
+                type="text"
+
+                placeholder="Issue Title"
+                value={issueTitle}
+                onChange={(e) => setIssueTitle(e.target.value)}
+              />
+            </div>
+            <div>
+              <textarea
+
+                placeholder="Issue Description"
+                rows={3}
+                cols={30}
+                value={issueDescription}
+                onChange={(e) => setIssueDescription(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button type="button" name="cancel" onClick={() => onOpenChange()}>
+              Cancel
+            </button>
+            <button
+              type="button"
+              name="create"
+              onClick={() => onCreate(() => onOpenChange())}
+            >
+              Create Issue
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 

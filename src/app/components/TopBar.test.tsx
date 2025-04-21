@@ -1,6 +1,5 @@
 import React from "react";
 import TopBar from "./TopBar";
-// import { render, screen, fireEvent } from "@testing-library/react";
 import { render, screen, fireEvent } from "@/utils/testUtils";
 import { useQuery } from "urql";
 import { useUserContext } from "@/app/context/UserContext";
