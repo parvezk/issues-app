@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { eq, and } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { users, issues, IssueStatus } from "@/db/schema";
 import { GraphQLError } from "graphql";
 import { signin, signup } from "@/utils/auth";
@@ -16,10 +16,18 @@ const resolvers = {
         extensions: { code: 401 },
       });
 
-    return await db
-      .select()
-      .from(issues)
-      .where(eq(issues.userId, context.user.id));
+    try {
+      return await db
+        .select()
+        .from(issues)
+        .where(eq(issues.userId, context.user.id))
+        .orderBy(desc(issues.createdAt));
+    } catch (err) {
+      console.error("Failed to fetch issues:", err);
+      throw new GraphQLError("Failed to fetch issues", {
+        extensions: { code: "DB_ERROR" },
+      });
+    }
   },
 
   user: async (_, context: GQLContext) => {
