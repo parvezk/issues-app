@@ -17,7 +17,6 @@
     "incremental": true,
 
     "types": [
-      "node_modules/@types",
       "@testing-library/user-event",
       "@testing-library/jest-dom"
     ],
