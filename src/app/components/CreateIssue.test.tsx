@@ -1,8 +1,7 @@
-import React, { use } from "react";
-import { render, screen, act } from "@/utils/testUtils";
+import React from "react";
+import { render, screen } from "@/utils/testUtils";
 import userEvent from "@testing-library/user-event";
 import { useMutation } from "urql";
-import { IssueStatus } from "@/db/schema";
 import CreateIssue from "./CreateIssue";
 
 jest.mock("urql", () => ({

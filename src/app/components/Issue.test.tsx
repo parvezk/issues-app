@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, act } from "@/utils/testUtils";
+import { render, screen } from "@/utils/testUtils";
 import userEvent from "@testing-library/user-event";
 import { useMutation } from "urql";
 import Issue from "./Issue";

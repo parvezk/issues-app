@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "urql";
 import {
-  ISSUES_QUERY,
   UPDATE_ISSUE_STATUS_MUTATION,
   DELETE_ISSUE_MUTATION,
 } from "@/gql";
