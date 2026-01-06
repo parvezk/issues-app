@@ -2,14 +2,13 @@
 import { Spinner, Tooltip, useDisclosure } from "@nextui-org/react";
 import { useQuery } from "urql";
 import { PlusIcon } from "lucide-react";
-//local
+
 import Issue from "@/components/Issue";
 import CreateIssue from "@/components/CreateIssue";
 import { ISSUES_QUERY } from "@/gql/ISSUES_QUERY";
 
 const IssuesPage = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
   const [{ data, fetching, error }, replay] = useQuery({
     query: ISSUES_QUERY,
   });

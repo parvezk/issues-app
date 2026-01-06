@@ -20,6 +20,8 @@ const issue = {
   status: "BACKLOG",
 };
 
+const assets = {};
+
 describe("Create Issue", () => {
   beforeAll(() => {
     fetchMock = jest.fn();

@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { useQuery } from "urql";
+
 import { useUserContext } from "@/app/context/UserContext";
 import { USERS_QUERY } from "@/gql/USERS_QUERY";
 
@@ -36,7 +37,7 @@ const TopBar = () => {
       <div className="top-right">
         <p className="info">{data.user.email}</p>
         <button onClick={toggleTheme}>{`${renderText} Theme`} </button>
-        <button>Logout</button>
+        <button onClick={() => {}}>Logout</button>
       </div>
     </header>
   );
