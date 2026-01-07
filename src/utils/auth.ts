@@ -56,7 +56,8 @@ export const signin = async ({
   if (!correctPW) return null;
 
   const token = createTokenForUser(match.id);
-  const { password: pw, ...user } = match;
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  const { password: _, ...user } = match;
 
   return { user, token };
 };

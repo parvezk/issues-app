@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "urql";
-import {
-  UPDATE_ISSUE_STATUS_MUTATION,
-  DELETE_ISSUE_MUTATION,
-} from "@/gql";
+import { UPDATE_ISSUE_STATUS_MUTATION, DELETE_ISSUE_MUTATION } from "@/gql";
 import { IssueStatus } from "@/db/schema";
 
 const Issue = ({ issue }) => {

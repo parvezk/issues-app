@@ -1,14 +1,17 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { useQuery } from "urql";
+import { useRouter } from "next/navigation";
 
 import { useUserContext } from "@/app/context/UserContext";
 import { USERS_QUERY } from "@/gql/USERS_QUERY";
+import { removeToken } from "@/utils/token";
 
 const TopBar = () => {
   const { theme, toggleTheme, setUser } = useUserContext();
   const previousUserRef = useRef(null);
+  const router = useRouter();
 
-  const [{ data, fetching, error }, replay] = useQuery({
+  const [{ data, fetching, error }] = useQuery({
     query: USERS_QUERY,
   });
 
@@ -28,6 +31,12 @@ const TopBar = () => {
     return txt.charAt(0).toUpperCase() + txt.slice(1);
   }, [theme]);
 
+  const handleLogout = () => {
+    removeToken();
+    setUser(null);
+    router.push("/signin");
+  };
+
   if (fetching) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -37,7 +46,7 @@ const TopBar = () => {
       <div className="top-right">
         <p className="info">{data.user.email}</p>
         <button onClick={toggleTheme}>{`${renderText} Theme`} </button>
-        <button onClick={() => {}}>Logout</button>
+        <button onClick={handleLogout}>Logout</button>
       </div>
     </header>
   );

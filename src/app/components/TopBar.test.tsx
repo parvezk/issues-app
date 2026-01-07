@@ -28,11 +28,24 @@ jest.mock("@/app/context/UserContext", () => {
   };
 });
 
+const mockPush = jest.fn();
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: mockPush,
+    replace: jest.fn(),
+    prefetch: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+    refresh: jest.fn(),
+  }),
+}));
+
 describe("TopBar", () => {
   const mockSetUser = jest.fn();
   const mockToggleTheme = jest.fn();
 
   beforeEach(() => {
+    jest.clearAllMocks();
     (useUserContext as jest.Mock).mockReturnValue({
       theme: "light",
       toggleTheme: mockToggleTheme,
@@ -88,5 +101,20 @@ describe("TopBar", () => {
   test("sets user on data change", () => {
     render(<TopBar />);
     expect(mockSetUser).toHaveBeenCalledWith({ email: "test@example.com" });
+  });
+
+  test("handles logout", () => {
+    // Mock localStorage
+    const removeItemSpy = jest.spyOn(Storage.prototype, "removeItem");
+    
+    render(<TopBar />);
+    const logoutButton = screen.getByText("Logout");
+    fireEvent.click(logoutButton);
+
+    expect(removeItemSpy).toHaveBeenCalledWith("parallel_user_token");
+    expect(mockSetUser).toHaveBeenCalledWith(null);
+    expect(mockPush).toHaveBeenCalledWith("/signin");
+
+    removeItemSpy.mockRestore();
   });
 });

@@ -2,7 +2,8 @@
  * Defines the API route for handling GraphQL requests.
  */
 import { NextRequest, NextResponse } from "next/server";
-import { buildSchema, graphql } from "graphql";
+import { graphql } from "graphql";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 // locals
 import resolvers from "./resolvers";
 import header from "@/utils/headers";
@@ -10,8 +11,11 @@ import { getUserFromToken } from "@/utils/auth";
 import typeDefs from "./typeDefs";
 // import typeDefs from "./schema.graphql";
 
-// Create the GraphQL schema
-const schema = buildSchema(typeDefs);
+// Create the GraphQL schema with resolvers
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
 
 export async function POST(req: NextRequest) {
   try {
@@ -28,7 +32,6 @@ export async function POST(req: NextRequest) {
     const response = await graphql({
       schema,
       source: query,
-      rootValue: resolvers,
       variableValues: variables,
       contextValue: await context(req),
     });

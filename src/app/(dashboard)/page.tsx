@@ -9,7 +9,7 @@ import { ISSUES_QUERY } from "@/gql/ISSUES_QUERY";
 
 const IssuesPage = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [{ data, fetching, error }, replay] = useQuery({
+  const [{ data, fetching, error }] = useQuery({
     query: ISSUES_QUERY,
   });
 
