@@ -1,4 +1,4 @@
-# Issues Full Stack App
+# Parallel App
 
 This next.js app fetches data using URQL (GraphQL client and front end data layer) and performs CRUD operation on Turso DB using GraphQL API and Drizzle ORM (back-end data layer)
 
@@ -81,4 +81,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## License
 
 [Add license information here]
-# nextjs-issues-aws
+# parallel-app

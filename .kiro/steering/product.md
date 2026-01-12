@@ -1,6 +1,6 @@
 # Product Overview
 
-Issues App is a full-stack issue tracking application built with Next.js. It provides CRUD operations for managing issues with status tracking (BACKLOG, TODO, IN_PROGRESS, DONE).
+Parallel App is a full-stack issue tracking application built with Next.js. It provides CRUD operations for managing issues with status tracking (BACKLOG, TODO, IN_PROGRESS, DONE).
 
 ## Core Features
 
