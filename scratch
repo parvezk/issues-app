@@ -1,9 +1,12 @@
 LOGIN INFO
-
 admin@admin.com
 admin
 
-// move api folder out of app
+AWS amplify details
+App ID: d2ws6k7wewq3d5
+https://main.d2ws6k7wewq3d5.amplifyapp.com/
+
+// check-move api folder out of app
 // rename libs to db
 
 ACCESS GRAPHQL EXPLORER: http://localhost:3000/api/graphql
