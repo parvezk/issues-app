@@ -41,7 +41,10 @@ const resolvers = {
         where: eq(users.id, context.user.id),
       });
 
-      if (!user) throw new Error("User not found");
+      if (!user)
+        throw new GraphQLError("User not found", {
+          extensions: { code: "NOT_FOUND" },
+        });
 
       return user;
     },
@@ -59,7 +62,10 @@ const resolvers = {
       };
 
       const [newIssue] = await db.insert(issues).values(issueData).returning();
-      if (!newIssue) throw new Error("CUSTOM Failed to create issue");
+      if (!newIssue)
+        throw new GraphQLError("CUSTOM Failed to create issue", {
+          extensions: { code: "CREATE_ERROR" },
+        });
       console.log("issue created", newIssue);
       return newIssue;
     },
@@ -73,7 +79,10 @@ const resolvers = {
         .where(eq(issues.id, id))
         .returning();
 
-      if (!updatedIssue) throw new Error("Failed to update issue status");
+      if (!updatedIssue)
+        throw new GraphQLError("Failed to update issue status", {
+          extensions: { code: "UPDATE_ERROR" },
+        });
       return updatedIssue;
     },
 
@@ -86,7 +95,10 @@ const resolvers = {
         .where(eq(issues.id, id))
         .returning();
 
-      if (!deletedIssue) throw new Error("Failed to delete issue");
+      if (!deletedIssue)
+        throw new GraphQLError("Failed to delete issue", {
+          extensions: { code: "DELETE_ERROR" },
+        });
       return deletedIssue;
     },
 
