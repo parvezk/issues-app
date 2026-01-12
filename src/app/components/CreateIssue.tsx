@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "urql";
-import { CREATE_ISSUE_MUTATION } from "@/gql";
+import { CREATE_ISSUE_MUTATION } from "@/gql/CREATE_ISSUE_MUTATION";
 import { IssueStatus } from "@/db/schema";
 
 const CreateIssue = ({ isOpen, onOpenChange }) => {
